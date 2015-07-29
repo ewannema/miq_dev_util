@@ -1,8 +1,14 @@
+# The Automate class is intended to hold methods that are useful when
+# interacting with the ManageIQ automate system directly.
+
 class MiqDevUtil::Automate
+
   def initialize(evm)
     @evm = evm
   end
 
+  # Instantiate an automate instance at path or raise an exception with the
+  # message provided if the instantiation returns nil (not found).
   def instantiate_or_raise(path, message)
     object = @evm.instantiate(path)
     if object.nil?

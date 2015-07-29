@@ -1,15 +1,19 @@
+# A utility class to write information to the ManageIQ logs.
+
 class MiqDevUtil::Logger
   def initialize(evm, method_name)
     @evm = evm
     @method_name = method_name
-
     @dump_log_level = :info
   end
 
+  # Write message to the logging system with the given logging level.
   def log(level, message)
     @evm.log(level, "#{@_method_name} - #{message}")
   end
 
+  # Write the attributes of the given object to the log with a prefix of
+  # my_object_name to make finding the entries a little easier.
   def dump_attributes(my_object, my_object_name)
     if my_object.respond_to?("attributes")
       self.log(@dump_log_level, "Begin #{my_object_name}.attributes")
@@ -21,6 +25,8 @@ class MiqDevUtil::Logger
     end
   end
 
+  # Write the associations of the given object to the log with a prefix of
+  # my_object_name to make finding the entries a little easier.
   def dump_associations(my_object, my_object_name)
     if my_object.respond_to?("associations")
       self.log(@dump_log_level, "Begin #{my_object_name}.associations")
@@ -32,6 +38,8 @@ class MiqDevUtil::Logger
     end
   end
 
+  # Write the virtual columns of the given object to the log with a prefix of
+  # my_object_name to make finding the entries a little easier.
   def dump_virtual_columns(my_object, my_object_name)
     if my_object.respond_to?("virtual_columns")
       self.log(@dump_log_level, "Begin #{my_object_name}.virtual_columns")
@@ -43,12 +51,14 @@ class MiqDevUtil::Logger
     end
   end
 
+  # A shortcut for dumping multiple types of information about the given object.
   def dump_info(my_object, my_object_name)
     self.dump_attributes(my_object, my_object_name)
     self.dump_associations(my_object, my_object_name)
     self.dump_virtual_columns(my_object, my_object_name)
   end
 
+  # A shortcut to dump the $evm.root object.
   def dump_root()
     self.dump_info(@evm.root, "$evm.root")
   end
