@@ -9,7 +9,7 @@ class MiqDevUtil::Logger
 
   # Write message to the logging system with the given logging level.
   def log(level, message)
-    @evm.log(level, "#{@_method_name} - #{message}")
+    @evm.log(level, "#{@method_name} - #{message}")
   end
 
   # Write the attributes of the given object to the log with a prefix of
@@ -17,7 +17,7 @@ class MiqDevUtil::Logger
   def dump_attributes(my_object, my_object_name)
     if my_object.respond_to?("attributes")
       self.log(@dump_log_level, "Begin #{my_object_name}.attributes")
-      my_object.attributes.sort.each { |k, v| $evm.log(:info, "#{my_object_name} Attribute - #{k}: #{v}")}
+      my_object.attributes.sort.each { |k, v| self.log(:info, "#{my_object_name} Attribute - #{k}: #{v}")}
       self.log(@dump_log_level, "End #{my_object_name}.attributes")
       self.log(@dump_log_level, "")
     else
@@ -30,7 +30,7 @@ class MiqDevUtil::Logger
   def dump_associations(my_object, my_object_name)
     if my_object.respond_to?("associations")
       self.log(@dump_log_level, "Begin #{my_object_name}.associations")
-      my_object.associations.sort.each { |a| $evm.log(:info, "#{my_object_name} Association - #{a}")}
+      my_object.associations.sort.each { |a| self.log(:info, "#{my_object_name} Association - #{a}")}
       self.log(@dump_log_level, "End #{my_object_name}.associations")
       self.log(@dump_log_level, "")
     else
@@ -41,9 +41,9 @@ class MiqDevUtil::Logger
   # Write the virtual columns of the given object to the log with a prefix of
   # my_object_name to make finding the entries a little easier.
   def dump_virtual_columns(my_object, my_object_name)
-    if my_object.respond_to?("virtual_columns")
+    if my_object.respond_to?("virtual_column_names")
       self.log(@dump_log_level, "Begin #{my_object_name}.virtual_columns")
-      my_object.virtual_column_names.sort.each { |vcn| $evm.log(:info, "#{my_object_name} Virtual Column - #{vcn}")}
+      my_object.virtual_column_names.sort.each { |vcn| self.log(:info, "#{my_object_name} Virtual Column - #{vcn}")}
       self.log(@dump_log_level, "End #{my_object_name}.virtual_columns")
       self.log(@dump_log_level, "")
     else
