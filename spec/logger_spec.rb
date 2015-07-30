@@ -67,5 +67,12 @@ describe MiqDevUtil::Logger do
       expect(@logger).to receive(:dump_virtual_columns).with(o, o_name)
       @logger.dump_info(o, o_name)
     end
+
+
+    it 'dump_root should log $evm.root info' do
+      @evm.stub(:root)
+      expect(@logger).to receive(:dump_info).with(@evm.root, "$evm.root")
+      @logger.dump_root
+    end
   end
 end
