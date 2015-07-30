@@ -32,6 +32,12 @@ describe MiqDevUtil::Logger do
       @logger.dump_attributes(o, o_name)
     end
 
+    it 'should be friendly when associations do not exist' do
+      expect(@evm).to receive(:log).with(@log_level, "#{@method_name} - No associations for test_object")
+      no_attr = Object.new
+      @logger.dump_associations(no_attr, "test_object")
+    end
+
     it 'should output ordered associations when they exist' do
       o = double()
       o.stub(:associations) {["foo", "bar", "baz"]}
@@ -43,6 +49,12 @@ describe MiqDevUtil::Logger do
       expect(@evm).to receive(:log).once.ordered.with(@log_level, "#{@method_name} - End #{o_name}.associations")
       expect(@evm).to receive(:log).once.ordered.with(@log_level, "#{@method_name} - ")
       @logger.dump_associations(o, o_name)
+    end
+
+    it 'should be friendly when virtual_columns do not exist' do
+      expect(@evm).to receive(:log).with(@log_level, "#{@method_name} - No virtual_columns for test_object")
+      no_attr = Object.new
+      @logger.dump_virtual_columns(no_attr, "test_object")
     end
 
     it 'should output ordered virtual_columns when they exist' do
