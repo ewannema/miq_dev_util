@@ -23,7 +23,7 @@ require 'miq_dev_util'
 
 ```ruby
 @logger = MiqDevUtil::Logger.new($evm, 'my_method_name')
-@logger.log('Hello World')
+@logger.log(:info, 'Hello World')
 
 @logger.dump_root
 
