@@ -57,6 +57,25 @@ automate_helper.instantiate_or_raise(path, message)
 # methods on it. It fails if a message is passed in the path or if the
 # message field on the any of the methods are *.
 automate_helper.get_instance_with_attributes(path)
+
+
+# Condense multiple types of VM lookups into one call. This is useful when
+# making an Automate method generic enough to be used during provisioning,
+# with a custom button, or as a catalog item.
+#
+# Lookup methods used and their order can be overridden by specifying
+# :lookup_order. The default is [:rootvm, :dialog_id, :provision]
+#
+#   * :rootvm    = $evm.root['vm']
+#   * :dialog_id = look up the VM in vmdb using the VMDB ID from a dialog
+#   * :provision = $evm.root['miq_provision'].vm
+#
+#
+# The dialog name that may hold the miq ID is specified via :dialog_name
+#
+
+vm = resolve_vm
+vm = resolve_vm(lookup_order: [:dialog_id], dialog_name: 'dialog_vm_id')
 ```
 
 ### Generic Code ###
