@@ -74,8 +74,9 @@ automate_helper.get_instance_with_attributes(path)
 # The dialog name that may hold the miq ID is specified via :dialog_name
 #
 
-vm = resolve_vm
-vm = resolve_vm(lookup_order: [:dialog_id], dialog_name: 'dialog_vm_id')
+vm = automate_helper.resolve_vm
+vm = automate_helper.resolve_vm(lookup_order: [:dialog_id],
+                                dialog_name: 'dialog_vm_id')
 ```
 
 ### Generic Code ###
