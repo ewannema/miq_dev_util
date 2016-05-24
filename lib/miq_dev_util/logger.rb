@@ -12,6 +12,22 @@ class MiqDevUtil::Logger
     @evm.log(level, "#{@method_name} - #{message}")
   end
 
+  def debug(message)
+    log(:debug, message)
+  end
+
+  def error(message)
+    log(:error, message)
+  end
+
+  def info(message)
+    log(:info, message)
+  end
+
+  def warn(message)
+    log(:warn, message)
+  end
+
   # Write the attributes of the given object to the log with a prefix of
   # my_object_name to make finding the entries a little easier.
   def dump_attributes(my_object, my_object_name)

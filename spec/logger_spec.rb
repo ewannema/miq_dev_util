@@ -14,6 +14,30 @@ describe MiqDevUtil::Logger do
       @logger.log(@log_level, "test_message")
     end
 
+    it 'should log debug messages using the helper' do
+      expect(@evm).to receive(:log).with(:debug,
+                                         "#{@method_name} - test_message")
+      @logger.debug('test_message')
+    end
+
+    it 'should log warning messages using the helper' do
+      expect(@evm).to receive(:log).with(:warn,
+                                         "#{@method_name} - test_message")
+      @logger.warn('test_message')
+    end
+
+    it 'should log info messages using the helper' do
+      expect(@evm).to receive(:log).with(:info,
+                                         "#{@method_name} - test_message")
+      @logger.info('test_message')
+    end
+
+    it 'should log error messages using the helper' do
+      expect(@evm).to receive(:log).with(:error,
+                                         "#{@method_name} - test_message")
+      @logger.error('test_message')
+    end
+
     it 'should be friendly when attributes do not exist' do
       expect(@evm).to receive(:log).with(@log_level, "#{@method_name} - No attributes for test_object")
       no_attr = Object.new
@@ -79,7 +103,6 @@ describe MiqDevUtil::Logger do
       expect(@logger).to receive(:dump_virtual_columns).with(o, o_name)
       @logger.dump_info(o, o_name)
     end
-
 
     it 'dump_root should log $evm.root info' do
       @evm.stub(:root)
