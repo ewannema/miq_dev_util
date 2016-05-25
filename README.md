@@ -25,6 +25,11 @@ require 'miq_dev_util'
 @logger = MiqDevUtil::Logger.new($evm, 'my_method_name')
 @logger.log(:info, 'Hello World')
 
+# There are also shortcuts for different log levels.
+@logger.info('Hello info')
+@logger.warn('Uh oh')
+@logger.error('Something went really wrong.')
+
 @logger.dump_root
 
 @logger.dump_attributes($evm.root['vm'], 'root vm')
@@ -77,6 +82,46 @@ automate_helper.get_instance_with_attributes(path)
 vm = automate_helper.resolve_vm
 vm = automate_helper.resolve_vm(lookup_order: [:dialog_id],
                                 dialog_name: 'dialog_vm_id')
+```
+
+Issuing automate requests within Automate.
+
+```ruby
+# Options that are used in the various methods below.
+options = {}
+options[:namespace] = 'MyCustomCode'
+options[:class_name] = 'Methods'
+options[:instance_name] = 'do_something'
+options[:user_id] = $evm.vmdb(:user).find_by_userid('admin').id
+
+ah = MiqDevUtil::Automate.new($evm)
+
+# This uses an existing version of $evm.execute(create_automation_request) if it
+# already exists (MIQ 5.5+), otherwise it backports a version to use.
+
+request = ah.create_automation_request(options)
+# or to specify user and approval
+request = ah.create_automation_request(options, userid = 'admin', auto_approve = true))
+
+#
+# To run the automate request in the same zone as the VM.
+#
+ah.zone_aware_vm_automation_request(vm, options)
+
+# or to specify user and approval
+request = ah.zone_aware_vm_automation(vm, options, userid = 'admin', auto_approve = true))
+
+
+#
+# To synchronously wait for an automate request to finish.
+#
+updated_request = ah.wait_for_automation_request(request)
+
+# Optional parameters
+# Wait at most max_wait seconds.
+# Check the status ever poll_interval seconds.
+updated_request = ah.wait_for_automation_request(request, max_wait: 600,
+                                                          poll_interval: 5)
 ```
 
 ### Generic Code ###
