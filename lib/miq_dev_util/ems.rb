@@ -10,7 +10,7 @@ class MiqDevUtil::EMS
   # * :insecure
   def self.get_credentials(ems, insecure=true)
     {
-      host: ems['hostname'],
+      host: ems.hostname,
       user: ems.authentication_userid,
       password: ems.authentication_password,
       insecure: insecure
