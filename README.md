@@ -4,6 +4,9 @@ This is a set of helper classes to make developing in the ManageIQ automate
 model less cumbersome. By putting helper code and commonly used methods in this
 gem we can reduce the amount of code copied and pasted between methods.
 
+The master branch and version 1.x are being targeted for CloudForms 4.1. If you
+want support for CloudForms 3.2, please use the 0.x releases based upon the 3.2
+branch.
 
 ## Installation
 
