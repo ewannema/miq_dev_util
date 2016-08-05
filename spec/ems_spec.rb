@@ -1,26 +1,33 @@
 require 'spec_helper'
 
-describe MiqDevUtil::Code do
-  context "deep_copy operations" do
-    before :each do
-      @o = {"a" => "foo", "nested" => {"baz" => "bar"}}
-      @o_copy = MiqDevUtil::Code.deep_copy(@o)
+describe MiqDevUtil::EMS do
+  before :each do
+    @hostname = "server001.example.local"
+    @username = "testuser"
+    @password = "testpassword"
+
+    @ems = {}
+    @ems.stub(:hostname) {@hostname}
+    @ems.stub(:authentication_userid) {@username}
+    @ems.stub(:authentication_password) {@password}
+  end
+
+  context "credential manipulation" do
+    it 'should return a correct credential' do
+      cred = MiqDevUtil::EMS.get_credentials(@ems)
+      cred[:host].should == @hostname
+      cred[:user].should == @username
+      cred[:password].should == @password
     end
 
-    it 'should be a different object' do
-      # Object identity should be different
-      expect(@o_copy.equal?(@o)).to be(false)
+    it 'should set insecure=true by default' do
+      cred = MiqDevUtil::EMS.get_credentials(@ems)
+      cred[:insecure].should == true
     end
 
-    it 'should have a different nested object' do
-      # Here is where clone would fail because the nested object is a reference
-      # to the same as the parent.
-      expect(@o_copy["nested"].equal?(@o["nested"])).to be(false)
-    end
-
-    it 'should still have the same values' do
-      # Hash == checks keys and values
-      @o_copy.should eq(@o)
+    it 'should allow insecure=false as an optional parameter' do
+      cred = MiqDevUtil::EMS.get_credentials(@ems, false)
+      cred[:insecure].should == false
     end
   end
 end
